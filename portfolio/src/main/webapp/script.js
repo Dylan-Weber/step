@@ -26,3 +26,22 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
+
+function addRandomCartoonQuote() {
+    const quotes = [
+        'If every porkchop were perfect, we wouldn\'t have hot dogs - Greg Universe',
+
+        'Bacon pancakes, makin\' bacon pancakes.\n' +
+        'Take some bacon and I\'ll put it in a pancake.\n' +
+        'Bacon pancakes that\'s what it\'s gonna make,\n' +
+        'Bacon pancaaake!\n' +
+        ' - Jake the Dog',
+
+        'Now the pig goes wherever he can shine the light of knowledge into the darkness of ignorance. - Waddles'
+    ]
+  
+    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+
+    const quoteContainer = document.getElementById('greeting-container');
+    quoteContainer.innerText = quote;
+}
