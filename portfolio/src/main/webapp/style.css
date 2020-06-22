@@ -1,9 +1,27 @@
 #content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 650px;
+    align-content: center;
 }
 
-#greeting-container {
-  margin-top: 20px;
+#quote-container {
+    margin-top: 20px;
+}
+
+.avatar {
+    width: auto;
+    max-width: 30%;
+    height: auto;
+}
+
+.center-img { 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 99%;
+}
+
+.center-text { 
+    text-align: center;
 }
