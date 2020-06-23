@@ -38,6 +38,10 @@ body {
     background-color: #A13F1E;
 }
 
+.button:active {
+    background-color: #853216;
+}
+
 #quote-container {
     margin-top: 20px;
 }
