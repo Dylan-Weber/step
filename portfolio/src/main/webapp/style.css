@@ -1,7 +1,17 @@
 /**
     Using color palette:
-        #201E1F, #FF4000, #FAAA8D, #FEEFDD, #50B2C0
+        Background: #201E1F
+        Buttons: 
+            - Default: #FF4000
+            - Hover: #A13F1E
+        Text: #FEEFDD
+        Links: 
+            - Default: #50B2C0
+            - Hover: #397E87
+            - Pressed: #28575C
+            - Visited: #3d4c85
 **/
+
 body {
     background-color: #201E1F;
 }
@@ -61,6 +71,23 @@ body {
     left: 0;
     top: 0;
     overflow: auto;
+}
+
+a {
+    color: #50B2C0;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #397E87;
+}
+
+a:active {
+    color: #28575C;
+}
+
+a:visited {
+    color: #3d4c85;
 }
 
 .navbar-item {
