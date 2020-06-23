@@ -4,6 +4,7 @@
         Buttons: 
             - Default: #FF4000
             - Hover: #A13F1E
+            - Pressed: #853216
         Text: #FEEFDD
         Links: 
             - Default: #50B2C0
@@ -104,4 +105,8 @@ a:visited {
 
 .navbar-item a:hover {
     background-color: #A13F1E;
+}
+
+.navbar-item a:active {
+    background-color: #853216;
 }
