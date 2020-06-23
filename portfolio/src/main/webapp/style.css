@@ -29,6 +29,7 @@ body {
 
 .avatar {
     width: auto;
+    min-width: 130px;
     max-width: 30%;
     height: auto;
 }
