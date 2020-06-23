@@ -16,6 +16,13 @@ body {
     color: #FEEFDD;
 }
 
+#content button {
+    background-color: #FF4000;
+    color: #FEEFDD;
+    border: none;
+    padding: 6px 5px;
+}
+
 #quote-container {
     margin-top: 20px;
 }
