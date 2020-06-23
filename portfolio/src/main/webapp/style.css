@@ -1,7 +1,18 @@
 /**
     Using color palette:
-        #201E1F, #FF4000, #FAAA8D, #FEEFDD, #50B2C0
+        Background: #201E1F
+        Buttons: 
+            - Default: #FF4000
+            - Hover: #A13F1E
+            - Pressed: #853216
+        Text: #FEEFDD
+        Links: 
+            - Default: #50B2C0
+            - Hover: #397E87
+            - Pressed: #28575C
+            - Visited: #3d4c85
 **/
+
 body {
     background-color: #201E1F;
 }
@@ -10,9 +21,25 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin-top: 50px;
-    width: 650px;
+    max-width: 750px;
+    width: auto;
     align-content: center;
     color: #FEEFDD;
+}
+
+.button {
+    background-color: #FF4000;
+    color: #FEEFDD;
+    border: none;
+    padding: 6px 5px;
+}
+
+.button:hover {
+    background-color: #A13F1E;
+}
+
+.button:active {
+    background-color: #853216;
 }
 
 #quote-container {
@@ -21,6 +48,7 @@ body {
 
 .avatar {
     width: auto;
+    min-width: 130px;
     max-width: 30%;
     height: auto;
 }
@@ -36,11 +64,25 @@ body {
     text-align: center;
 }
 
+a {
+    color: #50B2C0;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #397E87;
+}
+
+a:active {
+    color: #28575C;
+}
+
+a:visited {
+    color: #3d4c85;
+}
+
 #navbar {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width:100%;
+    width: 100%;
     height: auto;
     background-color: #FF4000;
     position: fixed;
@@ -48,6 +90,12 @@ body {
     left: 0;
     top: 0;
     overflow: auto;
+}
+
+#navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .navbar-item {
@@ -64,4 +112,8 @@ body {
 
 .navbar-item a:hover {
     background-color: #A13F1E;
+}
+
+.navbar-item a:active {
+    background-color: #853216;
 }

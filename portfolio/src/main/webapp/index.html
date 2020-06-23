@@ -2,22 +2,25 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Dylan Weber's Portfolio</title>
+        <title>Dylan Weber</title>
         <link rel="stylesheet" href="style.css">
         <script src="script.js"></script>
     </head>
     <body>
-        <ul id="navbar">
-            <li class="navbar-item"><a href="index.html">Home</a>
-        </ul>
+        <nav id="navbar">
+            <ul>
+                <li class="navbar-item"><a href="index.html">Home</a>
+                <li class="navbar-item"><a href="contact.html">Contact</a>
+            </ul>
+        </nav>
 
         <div id="content">
-            <h1 class="center-text">Dylan Weber's Portfolio</h1>
+            <h1 class="center-text">Dylan Weber</h1>
             <img class="avatar center-img" src="./images/avatar.jpg" alt="Picture of Dylan"></img>
-            <p>I'm Dylan, a rising sophomore at MIT and a Google STEP Intern for summer 2020. Thanks for visiting my page!</p>
+            <p>I'm Dylan, a rising sophomore at MIT studying computer science and a Google STEP Intern for summer 2020. Thanks for visiting my page!</p>
             <p>
                 Click here to get a random quote: 
-                <button onclick="addRandomCartoonQuote()">Cartoon Quote</button>
+                <button class="button" onclick="addRandomCartoonQuote()">Cartoon Quote</button>
             </p>
             <div id="quote-container"></div>
         </div>
