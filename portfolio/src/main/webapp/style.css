@@ -10,7 +10,8 @@ body {
     margin-left: auto;
     margin-right: auto;
     margin-top: 50px;
-    width: 650px;
+    max-width: 750px;
+    width: auto;
     align-content: center;
     color: #FEEFDD;
 }
@@ -40,7 +41,7 @@ body {
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width:100%;
+    width: 100%;
     height: auto;
     background-color: #FF4000;
     position: fixed;
