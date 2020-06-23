@@ -64,20 +64,6 @@ body {
     text-align: center;
 }
 
-#navbar {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: auto;
-    background-color: #FF4000;
-    position: fixed;
-    z-index: 100;
-    left: 0;
-    top: 0;
-    overflow: auto;
-}
-
 a {
     color: #50B2C0;
     text-decoration: none;
@@ -93,6 +79,23 @@ a:active {
 
 a:visited {
     color: #3d4c85;
+}
+
+#navbar {
+    width: 100%;
+    height: auto;
+    background-color: #FF4000;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    overflow: auto;
+}
+
+#navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .navbar-item {
