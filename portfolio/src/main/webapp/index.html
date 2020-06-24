@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Dylan Weber</title>
@@ -9,16 +9,68 @@
     <body>
         <nav id="navbar">
             <ul>
-                <li class="navbar-item"><a href="index.html">Home</a>
-                <li class="navbar-item"><a href="contact.html">Contact</a>
-                <li class="navbar-item"><a href="cat-pictures.html">Cat Pictures</a>
+                <li class="navbar-item"><a href="#about-me">About Me</a>
+                <li class="navbar-item"><a href="#contact">Contact</a>
+                <li class="navbar-item"><a href="#my-work">My Work</a>
+                <li class="navbar-item"><a href="#acting">Acting</a>
+                <li class="navbar-item"><a href="#cat-pictures">Cat Pictures</a>
             </ul>
         </nav>
 
         <div id="content">
-            <h1 class="center-text">Dylan Weber</h1>
-            <img class="avatar center-img" src="./images/avatar.jpg" alt="Picture of Dylan"></img>
-            <p>I'm Dylan, a rising sophomore at MIT studying computer science and a Google STEP Intern for summer 2020. Thanks for visiting my page!</p>
+            <div id="about-me" class="section">
+                <h1>Dylan Weber</h1>
+                <img class="avatar center-img" src="./images/avatar.jpg" alt="Picture of Dylan"></img>
+                <p>I'm Dylan, a rising sophomore at MIT studying computer science and a Google STEP Intern for summer 2020. Thanks for visiting my page!</p>
+            </div>
+
+            <div id="contact" class="section">
+                <h2>Contact</h2>
+                <p>Personal Email: <a href="mailto:dylanweber214@gmail.com">dylanweber214@gmail.com</a></p>
+                <p>School Email: <a href="mailto:dylanweb@mit.edu">dylanweb@mit.edu</a></p>
+                <p>Github: <a href="https://github.com/Dylan-Weber">Dylan-Weber</a></p>
+            </div>
+            
+            <div id="my-work" class="section">
+                <h2>My Work</h2>
+                
+                <h3>6.08 Introduction to Embedded Systems</h3>
+                <p>
+                    During the spring semester of my first year at MIT, I enrolled in 6.08 Introduction to Embedded Systems.
+                    In this class, I programmed an ESP32 microcontroller in C++ using Arduino libraries. 
+                    Throughout the class, multiple input and output devices were added to this microcontroller, including a GPS, a gyroscope and an LCD display. 
+                    I also worked with a flask-based server backend and a SQLite database. 
+
+                    This class culminated in a four-week capstone project utilizing the server backend and the ESP32.
+                    My team created a virtual world where the user can create an avatar and have it be displayed on the ESP32's display.
+                    In addition, players were able to invite up to four other users to their room and view multiple avatars on the screen simultaneously.
+
+                    My main focuses in this project included an authentication system that stored usernames
+                    and hashed password data, and integrating the ESP32 frontend and server backend to allow for near real-time updates to each avatar's appearance, animation and location.
+                </p>
+            </div>
+
+            <div id="acting" class="section">
+                <h2>Acting</h2>
+                In addition to my work in computer science, I am an actor. Throughout middle school and high school, I participated in school plays.
+                I am currently a member of the Musical Theater Guild at MIT. While I was a cast member in the spring 2020 production of "Cabaret," the production was unfortunately canceled due to COVID-19.
+                Professionally, I've appeared as an extra in the upcoming film <a href="https://www.imdb.com/title/tt1321510/">"In The Heights,"</a> and with a speaking role in the 2018 film <a href="https://www.imdb.com/title/tt8669354/">Throwback Holiday</a>. 
+                Most notably, I play Nevada Duncan in <a href="https://www.bet.com/shows/carl-webers-the-family-business/">BET's "The Family Business"</a>.
+            </div>
+            
+            <div id="cat-pictures" class="section">
+                <h2>Pictures of My Cat</h2>
+                <p> 
+                    The Google walkthrough that I read before making this website was dedicated to a cat named Stanley.
+                    Half of my photo gallery is pictures of my cat, Sunday, so I decided to share some pictures.
+                </p>
+                <div class="image-thumbnails">
+                    <a href="images/sunday-1.jpg"><img src="images/sunday-1-small.jpg"/></a>
+                    <a href="images/sunday-2.jpg"><img src="images/sunday-2-small.jpg"/></a>
+                    <a href="images/sunday-3.jpg"><img src="images/sunday-3-small.jpg"/></a>
+                    <a href="images/sunday-4.jpg"><img src="images/sunday-4-small.jpg"/></a>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -27,6 +27,30 @@ body {
     color: #FEEFDD;
 }
 
+#content h1 {
+    font-size: 300%;
+    text-align: center;
+    /* This padding-top margin-top hack makes sure the navbar 
+     * doesn't cover up the content while moving to an anchor.
+     * It feels a bit hacky, but I prefer it to using javascript to scroll, 
+     * since people may have javascript disabled.
+     */
+    padding-top: 40px;
+    margin-top: -40px;
+}
+
+#content h2 {
+    text-align: center;
+
+    /* This padding-top margin-top hack makes sure the navbar 
+     * doesn't cover up the content while moving to an anchor.
+     * It feels a bit hacky, but I prefer it to using javascript to scroll, 
+     * since people may have javascript disabled.
+     */
+    padding-top: 40px;
+    margin-top: -40px;
+}
+
 .button {
     background-color: #FF4000;
     color: #FEEFDD;
@@ -58,10 +82,6 @@ body {
     margin-left: auto;
     margin-right: auto;
     width: 99%;
-}
-
-.center-text { 
-    text-align: center;
 }
 
 a {
@@ -136,4 +156,8 @@ a:visited {
 
 #random-image-container img {
   margin-top: 20px;
+}
+
+.section {
+    margin-bottom: 40px;
 }
