@@ -27,6 +27,10 @@ body {
     color: #FEEFDD;
 }
 
+h1 {
+    font-size: 300%;
+}
+
 .button {
     background-color: #FF4000;
     color: #FEEFDD;
