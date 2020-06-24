@@ -157,3 +157,7 @@ a:visited {
 #random-image-container img {
   margin-top: 20px;
 }
+
+.section {
+    margin-bottom: 40px;
+}
