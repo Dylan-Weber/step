@@ -21,7 +21,6 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-left:120px;
-    margin-top: 50px;
     max-width: 750px;
     width: auto;
     align-content: center;
@@ -36,8 +35,6 @@ body {
      * It feels a bit hacky, but I prefer it to using javascript to scroll, 
      * since people may have javascript disabled.
      */
-    padding-top: 40px;
-    margin-top: -40px;
 }
 
 #content h2 {
@@ -48,8 +45,6 @@ body {
      * It feels a bit hacky, but I prefer it to using javascript to scroll, 
      * since people may have javascript disabled.
      */
-    padding-top: 40px;
-    margin-top: -40px;
 }
 
 .button {
