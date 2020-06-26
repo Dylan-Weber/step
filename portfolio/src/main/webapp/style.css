@@ -81,21 +81,20 @@ body {
 }
 
 a {
-    color: #50B2C0;
+    color: #A5D6D9;
     text-decoration: none;
-    font-weight: bold;
 }
 
 a:hover {
-    color: #397E87;
+    color: #85CCCC;
 }
 
 a:active {
-    color: #28575C;
+    color: #6CB7C1;
 }
 
 a:visited {
-    color: #465697;
+    color: #B3BBDB;
 }
 
 .navbar-horizontal {
