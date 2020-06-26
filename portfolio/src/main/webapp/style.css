@@ -20,7 +20,7 @@ body {
 #content {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 50px;
+    padding-left:120px;
     max-width: 750px;
     width: auto;
     align-content: center;
@@ -35,8 +35,6 @@ body {
      * It feels a bit hacky, but I prefer it to using javascript to scroll, 
      * since people may have javascript disabled.
      */
-    padding-top: 40px;
-    margin-top: -40px;
 }
 
 #content h2 {
@@ -47,8 +45,6 @@ body {
      * It feels a bit hacky, but I prefer it to using javascript to scroll, 
      * since people may have javascript disabled.
      */
-    padding-top: 40px;
-    margin-top: -40px;
 }
 
 .button {
@@ -87,6 +83,7 @@ body {
 a {
     color: #50B2C0;
     text-decoration: none;
+    font-weight: bold;
 }
 
 a:hover {
@@ -98,10 +95,10 @@ a:active {
 }
 
 a:visited {
-    color: #3d4c85;
+    color: #465697;
 }
 
-#navbar {
+.navbar-horizontal {
     width: 100%;
     height: auto;
     background-color: #FF4000;
@@ -112,14 +109,31 @@ a:visited {
     overflow: auto;
 }
 
-#navbar ul {
+.navbar-vertical {
+    width: auto;
+    height: 100%;
+    background-color: #FF4000;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    overflow: auto;
+}
+
+.navbar-horizontal ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-vertical ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
 }
 
 .navbar-item {
-    float: left;
+    float: top;
 }
 
 .navbar-item a {
