@@ -83,6 +83,7 @@ body {
 a {
     color: #50B2C0;
     text-decoration: none;
+    font-weight: bold;
 }
 
 a:hover {
@@ -94,7 +95,7 @@ a:active {
 }
 
 a:visited {
-    color: #3d4c85;
+    color: #465697;
 }
 
 .navbar-horizontal {
