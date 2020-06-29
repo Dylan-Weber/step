@@ -11,3 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+async function fetchTextAndPlaceInContainer() {
+    const data = await fetch('/data');
+    const text = await data.text();
+    const container = document.getElementById('fetch-data-container');
+    container.innerText = text;
+}
