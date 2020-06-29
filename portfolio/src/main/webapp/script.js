@@ -15,6 +15,6 @@
 async function fetchTextAndPlaceInContainer() {
     const data = await fetch('/data');
     const text = await data.text();
-    const container = document.getElementById('fetch-data-container');
+    let container = document.getElementById('fetch-data-container');
     container.innerText = text;
 }
