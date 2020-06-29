@@ -46,7 +46,7 @@ public class DataServlet extends HttpServlet {
     if (!comment.equals("")) {
       comments.add(comment);
     }
-    response.sendRedirect("index.html");
+    response.sendRedirect("index.html#comments");
   }
 
     /**
