@@ -12,9 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-async function fetchTextAndPlaceInContainer() {
-    const data = await fetch('/data');
-    const text = await data.text();
-    let container = document.getElementById('fetch-data-container');
-    container.innerText = text;
+async function loadComments() {
+    const data = await fetch('data');
+    const comments = await data.json();
+    let commentList = document.getElementById('comment-container');
+    for (let comment of comments) {
+        let commentDomObject = document.createElement('li');
+        commentDomObject.innerText = comment;
+        commentList.appendChild(commentDomObject);
+    }
 }
