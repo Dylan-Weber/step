@@ -28,18 +28,36 @@ import com.google.gson.Gson;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  List<String> comments = new ArrayList<>();
+  
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    List<String> comments = new ArrayList<>();
-    comments.add("Lorem ipsum dolor sit amet, consectetur adipiscing elit. - Julius Caesar");
-    comments.add("Suspendisse diam risus, sollicitudin sed feugiat sit amet, suscipit eget arcu. - Nero");
-    comments.add("Donec finibus faucibus risus et consequat. - Constantine");
-
     response.setContentType("application/json;");
     Gson gson = new Gson();
     
     String commentsJson = gson.toJson(comments);
 
     response.getWriter().println(commentsJson);
+  }
+
+  @Override 
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String comment = getParameter(request, "comment", "");
+    if (!comment.equals("")) {
+      comments.add(comment);
+    }
+    response.sendRedirect("index.html#comments");
+  }
+
+    /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
   }
 }
