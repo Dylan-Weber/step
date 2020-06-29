@@ -39,7 +39,7 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
     Gson gson = new Gson();
-    int count = Integer.parseInt(getParameter(request, "count", "150"));
+    int count = Integer.parseInt(getParameter(request, "count", "10"));
     List<String> comments = getCommentsFromDatabase(count);
     String commentsJson = gson.toJson(comments);
 
