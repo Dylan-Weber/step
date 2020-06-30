@@ -32,7 +32,6 @@ public class DataServlet extends HttpServlet {
     if (!comment.equals("")) {
       Comments.addCommentToDatabase(comment);
     }
-    response.sendRedirect("index.html#comments");
   }
 
   /**
