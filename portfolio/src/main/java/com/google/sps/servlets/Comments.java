@@ -14,12 +14,16 @@ import java.util.ArrayList;
 
 public final class Comments {
 
+private static final Query COMMENT_QUERY = new Query("Comment")
+    .addSort("timestamp", SortDirection.DESCENDING);
+
+private static final Query KEYS_ONLY_COMMENT_QUERY = new Query("Comment")
+    .addSort("timestamp", SortDirection.DESCENDING).setKeysOnly();
+
   //Empty private constructor to make sure the class isn't instantiable
   private Comments() { } 
   
-  private static PreparedQuery buildPreparedResults() {
-    Query query = new Query("Comment")
-    .addSort("timestamp", SortDirection.DESCENDING);
+  private static PreparedQuery buildPreparedResults(Query query) {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     return results;
@@ -35,7 +39,7 @@ public final class Comments {
   }
 
   static List<String> getCommentsFromDatabase(FetchOptions options) {
-    PreparedQuery results = buildPreparedResults();
+    PreparedQuery results = buildPreparedResults(COMMENT_QUERY);
     return fetchCommentsWithOptions(results, options);
   }
 
@@ -48,9 +52,8 @@ public final class Comments {
     datastore.put(commentEntity);
   }
 
-
   static void deleteAllComments() {
-    PreparedQuery results = buildPreparedResults();
+    PreparedQuery results = buildPreparedResults(KEYS_ONLY_COMMENT_QUERY);
     FetchOptions options = FetchOptions.Builder.withDefaults();
     List<Entity> commentEntities = results.asList(options);
     
@@ -58,7 +61,7 @@ public final class Comments {
     for (Entity commentEntity : commentEntities) {
       commentKeys.add(commentEntity.getKey());
     }
-    
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.delete(commentKeys);
   }
