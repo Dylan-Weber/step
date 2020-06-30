@@ -83,8 +83,10 @@
                     <input type="submit"></input>
                 </form>
                 <br />
-                <label for="comment-count-selector">Number of Comments Shown:</label>
+                <label for="comment-count-selector">Comments Per Page:</label>
                 <input type="number" id="comment-count-selector" min="1" value="10" onchange="loadComments();" ></input>
+                <label for="comment-page-selector">Page Number:</label>
+                <input type="number" id="comment-page-selector" min="1" value="1" onchange="loadComments();" ></input>
                 <br />
                 <button onclick="deleteAllComments();">Delete All Comments</button>
                 <ul id="comment-container">

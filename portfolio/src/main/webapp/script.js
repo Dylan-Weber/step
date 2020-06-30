@@ -14,8 +14,10 @@
 
 async function loadComments() {
     const commentCountSelector = document.getElementById('comment-count-selector');
+    const commentPageSelector = document.getElementById('comment-page-selector');
     const commentCount = commentCountSelector.value;
-    const url = `/data?count=${commentCount}`;
+    const commentPage = commentPageSelector.value;
+    const url = `/data?count=${commentCount}&page=${commentPage}`;
     const data = await fetch(url);
 
     const comments = await data.json();
