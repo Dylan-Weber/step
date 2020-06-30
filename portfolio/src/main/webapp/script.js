@@ -35,6 +35,6 @@ function removeAllChildren(node) {
 }
 
 function deleteAllComments() {
-    fetch('/delete-data', {method: 'POST'});
+    await fetch('/delete-data', {method: 'POST'});
     loadComments();
 }
