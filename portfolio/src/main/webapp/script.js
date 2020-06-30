@@ -33,3 +33,8 @@ function removeAllChildren(node) {
         node.removeChild(node.lastChild);
     }
 }
+
+function deleteAllComments() {
+    fetch('/delete-data', {method: 'POST'});
+    loadComments();
+}
