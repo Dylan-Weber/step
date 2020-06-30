@@ -28,28 +28,33 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.gson.Gson; 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data")
-public class DataServlet extends HttpServlet {  
+public class DataServlet extends HttpServlet { 
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
     Gson gson = new Gson();
-    List<String> comments = getCommentsFromDatabase();
+    int count = Integer.parseInt(getParameter(request, "count", "10"));
+    List<String> comments = getCommentsFromDatabase(count);
     String commentsJson = gson.toJson(comments);
 
     response.getWriter().println(commentsJson);
   }
 
-  private List<String> getCommentsFromDatabase() {
-    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+  private List<String> getCommentsFromDatabase(int count) {
+    Query query = new Query("Comment")
+      .addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
     List<String> comments = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
+    FetchOptions options = FetchOptions.Builder.withLimit(count);
+
+    for (Entity entity : results.asIterable(options)) {
       String comment = (String) entity.getProperty("text");
       comments.add(comment);
     }

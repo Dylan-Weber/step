@@ -13,12 +13,23 @@
 // limitations under the License.
 
 async function loadComments() {
-    const data = await fetch('data');
+    const commentCountSelector = document.getElementById('comment-count-selector');
+    const commentCount = commentCountSelector.value;
+    const url = `/data?count=${commentCount}`;
+    const data = await fetch(url);
+
     const comments = await data.json();
     let commentList = document.getElementById('comment-container');
+    removeAllChildren(commentList);
     for (let comment of comments) {
         let commentDomObject = document.createElement('li');
         commentDomObject.innerText = comment;
         commentList.appendChild(commentDomObject);
+    }
+}
+
+function removeAllChildren(node) {
+    while (node.firstChild) {
+        node.removeChild(node.lastChild);
     }
 }
