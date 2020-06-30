@@ -1,24 +1,51 @@
-protected final class Comments {
+package com.google.sps.servlets;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
+
+import java.util.List;
+import java.util.ArrayList;
+
+public final class Comments {
 
   //Empty private constructor to make sure the class isn't instantiable
   private Comments() { } 
   
-  protected List<String> getCommentsFromDatabase(int count) {
+  private static PreparedQuery buildPreparedResults() {
     Query query = new Query("Comment")
     .addSort("timestamp", SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-    List<String> comments = new ArrayList<>();
-    FetchOptions options = FetchOptions.Builder.withLimit(count);
+    return results;
+  }
 
+  private static List<String> fetchCommentsWithOptions(PreparedQuery results, FetchOptions options) {
+    List<String> comments = new ArrayList<>();
     for (Entity entity : results.asIterable(options)) {
-    String comment = (String) entity.getProperty("text");
-    comments.add(comment);
+        String comment = (String) entity.getProperty("text");
+        comments.add(comment);
     }
     return comments;
   }
 
-  protected void addCommentToDatabase(String commentText) {
+  static List<String> getAllCommentsFromDatabase() {
+    PreparedQuery results =  buildPreparedResults();
+    FetchOptions options = FetchOptions.Builder.withDefaults();
+    return fetchCommentsWithOptions(results, options);
+  }
+
+  static List<String> getCommentsFromDatabase(int count) {
+    PreparedQuery results =  buildPreparedResults();
+    FetchOptions options = FetchOptions.Builder.withLimit(count);
+    return fetchCommentsWithOptions(results, options);
+  }
+
+  static void addCommentToDatabase(String commentText) {
     Entity commentEntity = new Entity("Comment");
     long timestamp = System.currentTimeMillis();
     commentEntity.setProperty("text", commentText);
