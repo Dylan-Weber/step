@@ -40,43 +40,19 @@ public class DataServlet extends HttpServlet {
     response.setContentType("application/json;");
     Gson gson = new Gson();
     int count = Integer.parseInt(getParameter(request, "count", "10"));
-    List<String> comments = getCommentsFromDatabase(count);
+    List<String> comments = Comments.getCommentsFromDatabase(count);
     String commentsJson = gson.toJson(comments);
 
     response.getWriter().println(commentsJson);
-  }
-
-  private List<String> getCommentsFromDatabase(int count) {
-    Query query = new Query("Comment")
-      .addSort("timestamp", SortDirection.DESCENDING);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = datastore.prepare(query);
-    List<String> comments = new ArrayList<>();
-    FetchOptions options = FetchOptions.Builder.withLimit(count);
-
-    for (Entity entity : results.asIterable(options)) {
-      String comment = (String) entity.getProperty("text");
-      comments.add(comment);
-    }
-    return comments;
   }
 
   @Override 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = getParameter(request, "comment", "");
     if (!comment.equals("")) {
-      addCommentToDatabase(comment);
+      Comments.addCommentToDatabase(comment);
     }
     response.sendRedirect("index.html#comments");
-  }
-
-  private void addCommentToDatabase(String commentText) {
-    Entity commentEntity = new Entity("Comment");
-    long timestamp = System.currentTimeMillis();
-    commentEntity.setProperty("text", commentText);
-    commentEntity.setProperty("timestamp", timestamp);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
   }
 
   /**
