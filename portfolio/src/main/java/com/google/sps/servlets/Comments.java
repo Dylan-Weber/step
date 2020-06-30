@@ -33,15 +33,8 @@ public final class Comments {
     return comments;
   }
 
-  static List<String> getAllCommentsFromDatabase() {
-    PreparedQuery results =  buildPreparedResults();
-    FetchOptions options = FetchOptions.Builder.withDefaults();
-    return fetchCommentsWithOptions(results, options);
-  }
-
-  static List<String> getCommentsFromDatabase(int count) {
-    PreparedQuery results =  buildPreparedResults();
-    FetchOptions options = FetchOptions.Builder.withLimit(count);
+  static List<String> getCommentsFromDatabase(FetchOptions options) {
+    PreparedQuery results = buildPreparedResults();
     return fetchCommentsWithOptions(results, options);
   }
 
