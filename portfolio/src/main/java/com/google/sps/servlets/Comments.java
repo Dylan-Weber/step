@@ -50,7 +50,6 @@ public final class Comments {
 
 
   static void deleteAllComments() {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = buildPreparedResults();
     FetchOptions options = FetchOptions.Builder.withDefaults();
     List<Entity> commentEntities = results.asList(options);
@@ -59,7 +58,8 @@ public final class Comments {
     for (Entity commentEntity : commentEntities) {
       commentKeys.add(commentEntity.getKey());
     }
-
+    
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.delete(commentKeys);
   }
 }
