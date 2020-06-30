@@ -19,7 +19,11 @@ public class DataServlet extends HttpServlet {
     response.setContentType("application/json;");
     Gson gson = new Gson();
     int count = Integer.parseInt(getParameter(request, "count", "10"));
-    FetchOptions options = FetchOptions.Builder.withLimit(count);
+    int page = Integer.parseInt(getParameter(request, "page", "1"));
+    FetchOptions options = 
+      FetchOptions.Builder
+        .withLimit(count)
+        .offset((page - 1) * count);
     List<String> comments = Comments.getCommentsFromDatabase(options);
     String commentsJson = gson.toJson(comments);
 
