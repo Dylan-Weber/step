@@ -75,20 +75,22 @@
 
             <div id="comments" class="section">
                 <h2>Comments</h2>
-                <form action="/data" method="POST" id="comment-form">
-                    <label for="comment-input">Write a comment:</label>
-                    <br />
-                    <textarea form="comment-form" name="comment"></textarea>
-                    <br />
-                    <input type="submit"></input>
-                </form>
+
+                <label for="comment-input">Write a comment:</label>
                 <br />
-                <label for="comment-count-selector">Number of Comments Shown:</label>
+                <textarea form="comment-form" id="comment-input-area"></textarea>
+                <br />
+                <input type="submit" onclick="submitComment();"></input>
+                
+                <br />
+                <label for="comment-count-selector">Comments Per Page:</label>
                 <input type="number" id="comment-count-selector" min="1" value="10" onchange="loadComments();" ></input>
+
                 <br />
+
                 <button onclick="deleteAllComments();">Delete All Comments</button>
-                <ul id="comment-container">
-                </ul>
+                
+                <ul id="comment-container"></ul>
             </div>
         </div>
     </body>

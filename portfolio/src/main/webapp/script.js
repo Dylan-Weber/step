@@ -12,6 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+async function submitComment() {
+    const commentInputArea = document.getElementById('comment-input-area');
+    const commentText = commentInputArea.value;
+    await fetch(`/data?comment=${commentText}`, {method: 'POST'});
+    loadComments();
+    commentInputArea.value = '';
+}
+
 async function loadComments() {
     const commentCountSelector = document.getElementById('comment-count-selector');
     const commentCount = commentCountSelector.value;
