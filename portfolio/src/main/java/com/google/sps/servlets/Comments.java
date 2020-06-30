@@ -46,5 +46,19 @@ public final class Comments {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
   }
+
+
+  static void deleteAllComments() {
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = buildPreparedResults();
+    List<Entity> commentEntities = results.asList();
+    
+    List<Key> commentKeys = new ArrayList<>();
+    for (Entity commentEntity : commentEntities) {
+      commentKeys.add(commentEntity.getKey());
+    }
+
+    datastore.delete(commentKeys);
+  }
 }
 
