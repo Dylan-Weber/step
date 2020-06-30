@@ -8,6 +8,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
+import java.util.stream.Collectors;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -30,11 +31,11 @@ private static final Query KEYS_ONLY_COMMENT_QUERY = new Query("Comment")
   }
 
   private static List<String> fetchCommentsWithOptions(PreparedQuery results, FetchOptions options) {
-    List<String> comments = new ArrayList<>();
-    for (Entity entity : results.asIterable(options)) {
-        String comment = (String) entity.getProperty("text");
-        comments.add(comment);
-    }
+    List<String> comments = 
+        results.asList(options)
+            .stream()
+            .map(e -> (String) e.getProperty("text"))
+            .collect(Collectors.toList());
     return comments;
   }
 
@@ -57,10 +58,11 @@ private static final Query KEYS_ONLY_COMMENT_QUERY = new Query("Comment")
     FetchOptions options = FetchOptions.Builder.withDefaults();
     List<Entity> commentEntities = results.asList(options);
     
-    List<Key> commentKeys = new ArrayList<>();
-    for (Entity commentEntity : commentEntities) {
-      commentKeys.add(commentEntity.getKey());
-    }
+    List<Key> commentKeys = 
+        results.asList(options)
+            .stream()
+            .map(e -> e.getKey())
+            .collect(Collectors.toList());
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.delete(commentKeys);
