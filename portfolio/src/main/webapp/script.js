@@ -26,8 +26,8 @@ async function loadComments() {
     const url = `/data?count=${commentCount}`;
     const data = await fetch(url);
 
-    const comments = await data.json();
-    let commentList = document.getElementById('comment-container');
+    const serverResponse = await data.json();
+    let commentContainer = document.getElementById('comment-container');
     removeAllChildren(commentList);
     for (let comment of comments) {
         let commentDomObject = document.createElement('li');
