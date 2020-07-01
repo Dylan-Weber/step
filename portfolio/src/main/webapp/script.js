@@ -28,11 +28,11 @@ async function loadComments() {
 
     const serverResponse = await data.json();
     let commentContainer = document.getElementById('comment-container');
-    removeAllChildren(commentList);
-    for (let comment of comments) {
+    removeAllChildren(commentContainer);
+    for (let comment of serverResponse) {
         let commentDomObject = document.createElement('li');
         commentDomObject.innerText = comment;
-        commentList.appendChild(commentDomObject);
+        commentContainer.appendChild(commentDomObject);
     }
 }
 
