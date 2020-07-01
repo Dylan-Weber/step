@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-import com.google.appengine.api.datastore.FetchOptions;
 import com.google.gson.Gson; 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -17,14 +16,14 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
+    
+    int commentCount = Integer.parseInt(getParameter(request, "count", "10"));
+    int pageNumber = Integer.parseInt(getParameter(request, "page", "1"));
+
+    CommentService commentHandler = new DatastoreCommentService();
+    List<String> comments = commentHandler.getCommentsFromDatabase(commentCount, pageNumber);
+
     Gson gson = new Gson();
-    int count = Integer.parseInt(getParameter(request, "count", "10"));
-    int page = Integer.parseInt(getParameter(request, "page", "1"));
-    FetchOptions options = 
-      FetchOptions.Builder
-        .withLimit(count)
-        .offset((page - 1) * count);
-    List<String> comments = Comments.getCommentsFromDatabase(options);
     String commentsJson = gson.toJson(comments);
 
     response.getWriter().println(commentsJson);
@@ -34,9 +33,9 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = getParameter(request, "comment", "");
     if (!comment.equals("")) {
-      Comments.addCommentToDatabase(comment);
+      CommentService commentHandler = new DatastoreCommentService();
+      commentHandler.addCommentToDatabase(comment);
     }
-    response.sendRedirect("index.html#comments");
   }
 
   /**

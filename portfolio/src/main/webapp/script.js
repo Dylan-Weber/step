@@ -12,6 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+async function submitComment() {
+    const commentInputArea = document.getElementById('comment-input-area');
+    const commentText = commentInputArea.value;
+    await fetch(`/data?comment=${commentText}`, {method: 'POST'});
+    loadComments();
+    commentInputArea.value = '';
+}
+
 async function loadComments() {
     const commentCountSelector = document.getElementById('comment-count-selector');
     const commentPageSelector = document.getElementById('comment-page-selector');
@@ -20,13 +28,13 @@ async function loadComments() {
     const url = `/data?count=${commentCount}&page=${commentPage}`;
     const data = await fetch(url);
 
-    const comments = await data.json();
-    let commentList = document.getElementById('comment-container');
-    removeAllChildren(commentList);
-    for (let comment of comments) {
+    const serverResponse = await data.json();
+    let commentContainer = document.getElementById('comment-container');
+    removeAllChildren(commentContainer);
+    for (let comment of serverResponse) {
         let commentDomObject = document.createElement('li');
         commentDomObject.innerText = comment;
-        commentList.appendChild(commentDomObject);
+        commentContainer.appendChild(commentDomObject);
     }
 }
 
