@@ -35,10 +35,15 @@ import com.google.gson.Gson;
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/delete-data")
 public class DeleteCommentServlet extends HttpServlet { 
+  private CommentService commentHandler;
+  
+  @Override
+  public void init() {
+    commentHandler = new DatastoreCommentService();
+  }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    CommentService commentHandler = new DatastoreCommentService();
     commentHandler.deleteAllComments();
   }
 }
