@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-import com.google.appengine.api.datastore.FetchOptions;
 import com.google.gson.Gson; 
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
@@ -18,9 +17,10 @@ public class DataServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
     Gson gson = new Gson();
-    int count = Integer.parseInt(getParameter(request, "count", "10"));
-    FetchOptions options = FetchOptions.Builder.withLimit(count);
-    List<String> comments = Comments.getCommentsFromDatabase(options);
+    int commentCount = Integer.parseInt(getParameter(request, "count", "10"));
+
+    CommentService commentHandler = new CommentService();
+    List<String> comments = commentHandler.getCommentsFromDatabase(commentCount);
     String commentsJson = gson.toJson(comments);
 
     response.getWriter().println(commentsJson);
@@ -30,7 +30,8 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = getParameter(request, "comment", "");
     if (!comment.equals("")) {
-      Comments.addCommentToDatabase(comment);
+      CommentService commentHandler = new CommentService();
+      commentHandler.addCommentToDatabase(comment);
     }
   }
 
