@@ -8,8 +8,9 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
-import java.util.stream.Collectors;
 
+import java.lang.Math;
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -67,5 +68,12 @@ class DatastoreCommentService implements CommentService {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.delete(commentKeys);
+  }
+
+  public int getNumberOfPages(int commentsPerPage) {
+    PreparedQuery results = buildPreparedResults(COMMENT_QUERY);
+    FetchOptions options = FetchOptions.Builder.withDefaults();
+    int numberOfComments = results.countEntities(options);
+    return (int) Math.ceil((float) numberOfComments / commentsPerPage);
   }
 }

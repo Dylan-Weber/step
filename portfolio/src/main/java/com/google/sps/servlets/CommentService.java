@@ -9,4 +9,6 @@ interface CommentService {
   void addCommentToDatabase(String commentText);
 
   void deleteAllComments();
+
+  int getNumberOfPages(int commentsPerPage);
 }

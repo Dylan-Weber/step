@@ -27,11 +27,13 @@ public class DataServlet extends HttpServlet {
     int commentCount = Integer.parseInt(getParameter(request, "count", "10"));
     int pageNumber = Integer.parseInt(getParameter(request, "page", "1"));
 
-    CommentService commentHandler = new DatastoreCommentService();
     List<String> comments = commentHandler.getCommentsFromDatabase(commentCount, pageNumber);
-
+    int numberOfPages = (int) Math.max(1, commentHandler.getNumberOfPages(commentCount));
+    
+    CommentSectionData data = new CommentSectionData(comments, numberOfPages);
+    
     Gson gson = new Gson();
-    String commentsJson = gson.toJson(comments);
+    String commentsJson = gson.toJson(data);
 
     response.getWriter().println(commentsJson);
   }
