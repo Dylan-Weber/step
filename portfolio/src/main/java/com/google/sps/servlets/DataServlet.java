@@ -19,7 +19,7 @@ public class DataServlet extends HttpServlet {
     Gson gson = new Gson();
     int commentCount = Integer.parseInt(getParameter(request, "count", "10"));
 
-    CommentService commentHandler = new CommentService();
+    CommentService commentHandler = new DatastoreCommentService();
     List<String> comments = commentHandler.getCommentsFromDatabase(commentCount);
     String commentsJson = gson.toJson(comments);
 
@@ -30,7 +30,7 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = getParameter(request, "comment", "");
     if (!comment.equals("")) {
-      CommentService commentHandler = new CommentService();
+      CommentService commentHandler = new DatastoreCommentService();
       commentHandler.addCommentToDatabase(comment);
     }
   }

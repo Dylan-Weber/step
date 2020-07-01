@@ -38,7 +38,7 @@ public class DeleteCommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    CommentService commentHandler = new CommentService();
+    CommentService commentHandler = new DatastoreCommentService();
     commentHandler.deleteAllComments();
   }
 }
