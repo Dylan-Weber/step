@@ -43,9 +43,6 @@ function setPageSelector(numberOfPages) {
   commentPageSelector.max = numberOfPages;
 
   const currentSelection = commentPageSelector.value;
-  console.log(numberOfPages);
-  console.log(currentSelection);
-  console.log(Math.min(numberOfPages, currentSelection));
   commentPageSelector.value = Math.min(numberOfPages, currentSelection);
 }
 

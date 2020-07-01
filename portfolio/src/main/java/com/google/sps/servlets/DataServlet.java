@@ -27,7 +27,7 @@ public class DataServlet extends HttpServlet {
     int commentCount = Integer.parseInt(getParameter(request, "count", "10"));
     int pageNumber = Integer.parseInt(getParameter(request, "page", "1"));
 
-    List<String> comments = commentHandler.getCommentsFromDatabase(commentCount, pageNumber);
+    List<String> comments = commentHandler.getComments(commentCount, pageNumber);
     int numberOfPages = (int) Math.max(1, commentHandler.getNumberOfPages(commentCount));
     
     CommentSectionData data = new CommentSectionData(comments, numberOfPages);

@@ -35,7 +35,8 @@ class DatastoreCommentService implements CommentService {
             .collect(Collectors.toList());
   }
 
-  public List<String> getCommentsFromDatabase(int commentCount, int pageNumber) {
+  @Override
+  public List<String> getComments(int commentCount, int pageNumber) {
     PreparedQuery results = buildPreparedResults(COMMENT_QUERY);
     int offset = (pageNumber - 1) * commentCount;
     FetchOptions options = 
@@ -45,6 +46,7 @@ class DatastoreCommentService implements CommentService {
     return fetchCommentsWithOptions(results, options);
   }
 
+  @Override
   public void addCommentToDatabase(String commentText) {
     Entity commentEntity = new Entity("Comment");
     long timestamp = System.currentTimeMillis();
@@ -55,6 +57,7 @@ class DatastoreCommentService implements CommentService {
     datastore.put(commentEntity);
   }
 
+  @Override
   public void deleteAllComments() {
     PreparedQuery results = buildPreparedResults(KEYS_ONLY_COMMENT_QUERY);
     FetchOptions options = FetchOptions.Builder.withDefaults();
@@ -70,6 +73,7 @@ class DatastoreCommentService implements CommentService {
     datastore.delete(commentKeys);
   }
 
+  @Override
   public int getNumberOfPages(int commentsPerPage) {
     PreparedQuery results = buildPreparedResults(COMMENT_QUERY);
     FetchOptions options = FetchOptions.Builder.withDefaults();
