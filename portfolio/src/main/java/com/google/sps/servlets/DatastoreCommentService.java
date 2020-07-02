@@ -8,8 +8,9 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
-import java.util.stream.Collectors;
 
+import java.lang.Math;
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -34,12 +35,18 @@ class DatastoreCommentService implements CommentService {
             .collect(Collectors.toList());
   }
 
-  public List<String> getCommentsFromDatabase(int commentCount) {
+  @Override
+  public List<String> getComments(int commentCount, int pageNumber) {
     PreparedQuery results = buildPreparedResults(COMMENT_QUERY);
-    FetchOptions options = FetchOptions.Builder.withLimit(commentCount);
+    int offset = (pageNumber - 1) * commentCount;
+    FetchOptions options = 
+      FetchOptions.Builder
+        .withLimit(commentCount)
+        .offset(offset);
     return fetchCommentsWithOptions(results, options);
   }
 
+  @Override
   public void addCommentToDatabase(String commentText) {
     Entity commentEntity = new Entity("Comment");
     long timestamp = System.currentTimeMillis();
@@ -50,6 +57,7 @@ class DatastoreCommentService implements CommentService {
     datastore.put(commentEntity);
   }
 
+  @Override
   public void deleteAllComments() {
     PreparedQuery results = buildPreparedResults(KEYS_ONLY_COMMENT_QUERY);
     FetchOptions options = FetchOptions.Builder.withDefaults();
@@ -63,5 +71,13 @@ class DatastoreCommentService implements CommentService {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.delete(commentKeys);
+  }
+
+  @Override
+  public int getNumberOfPages(int commentsPerPage) {
+    PreparedQuery results = buildPreparedResults(COMMENT_QUERY);
+    FetchOptions options = FetchOptions.Builder.withDefaults();
+    int numberOfComments = results.countEntities(options);
+    return (int) Math.ceil((float) numberOfComments / commentsPerPage);
   }
 }

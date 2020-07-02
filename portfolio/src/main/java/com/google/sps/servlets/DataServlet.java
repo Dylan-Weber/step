@@ -23,11 +23,17 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("application/json;");
-    Gson gson = new Gson();
+    
     int commentCount = Integer.parseInt(getParameter(request, "count", "10"));
+    int pageNumber = Integer.parseInt(getParameter(request, "page", "1"));
 
-    List<String> comments = commentHandler.getCommentsFromDatabase(commentCount);
-    String commentsJson = gson.toJson(comments);
+    List<String> comments = commentHandler.getComments(commentCount, pageNumber);
+    int numberOfPages = (int) Math.max(1, commentHandler.getNumberOfPages(commentCount));
+    
+    CommentSectionData data = new CommentSectionData(comments, numberOfPages);
+    
+    Gson gson = new Gson();
+    String commentsJson = gson.toJson(data);
 
     response.getWriter().println(commentsJson);
   }
