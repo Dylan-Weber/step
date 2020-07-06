@@ -15,7 +15,14 @@
 async function submitComment() {
   const commentInputArea = document.getElementById('comment-input-area');
   const commentText = commentInputArea.value;
-  await fetch(`/data?comment=${commentText}`, {method: 'POST'});
+
+  const body = `comment=${commentText}`;
+  
+  await fetch(`/data`, { 
+    method: 'POST', 
+    body: body, 
+    headers: { 'Content-type': 'application/x-www-form-urlencoded' }
+  });
   loadComments();
   commentInputArea.value = '';
 }
