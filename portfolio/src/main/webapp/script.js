@@ -16,11 +16,12 @@ async function submitComment() {
   const commentInputArea = document.getElementById('comment-input-area');
   const commentText = commentInputArea.value;
 
-  const body = `comment=${commentText}`;
-  
+  let params =  new URLSearchParams();
+  params.append("comment", commentText);
+
   await fetch(`/data`, { 
     method: 'POST', 
-    body: body, 
+    body: params, 
     headers: { 'Content-type': 'application/x-www-form-urlencoded' }
   });
   loadComments();
@@ -39,7 +40,11 @@ async function requestCommentData() {
   const commentCount = commentCountSelector.value;
   const commentPage = commentPageSelector.value;
 
-  const url = `/data?count=${commentCount}&page=${commentPage}`;
+  let params =  new URLSearchParams();
+  params.append("count", commentCount);
+  params.append("page", commentPage);
+
+  const url = `/data?` + params.toString();
   const data = await fetch(url);
   const serverResponse = await data.json();
   return serverResponse;
