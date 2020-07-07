@@ -4,9 +4,9 @@ import java.util.List;
 
 interface CommentService {
 
-  List<String> getComments(int commentCount, int pageNumber);
+  List<Comment> getComments(int commentCount, int pageNumber);
 
-  void addCommentToDatabase(String commentText);
+  void addCommentToDatabase(String commentText, String email);
 
   void deleteAllComments();
 

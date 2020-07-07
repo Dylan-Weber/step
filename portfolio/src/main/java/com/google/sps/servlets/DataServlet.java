@@ -27,9 +27,9 @@ public class DataServlet extends HttpServlet {
     int commentCount = Integer.parseInt(getParameter(request, "count", "10"));
     int pageNumber = Integer.parseInt(getParameter(request, "page", "1"));
 
-    List<String> comments = commentHandler.getComments(commentCount, pageNumber);
+    List<Comment> comments = commentHandler.getComments(commentCount, pageNumber);
     int numberOfPages = (int) Math.max(1, commentHandler.getNumberOfPages(commentCount));
-    
+
     CommentSectionData data = new CommentSectionData(comments, numberOfPages);
     
     Gson gson = new Gson();
@@ -41,8 +41,9 @@ public class DataServlet extends HttpServlet {
   @Override 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = getParameter(request, "comment", "");
-    if (!comment.equals("")) {
-      commentHandler.addCommentToDatabase(comment);
+    UserManager userManager = new UsersApiUserManager();
+    if (!comment.equals("") && userManager.userIsLoggedIn()) {
+      commentHandler.addCommentToDatabase(comment, userManager.currentUserEmail());
     }
   }
 

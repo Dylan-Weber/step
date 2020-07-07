@@ -28,15 +28,15 @@ class DatastoreCommentService implements CommentService {
     return results;
   }
 
-  private List<String> fetchCommentsWithOptions(PreparedQuery results, FetchOptions options) {
+  private List<Comment> fetchCommentsWithOptions(PreparedQuery results, FetchOptions options) {
     return results.asList(options)
             .stream()
-            .map(e -> (String) e.getProperty("text"))
+            .map(e -> new Comment((String) e.getProperty("author"), (String) e.getProperty("text")))
             .collect(Collectors.toList());
   }
 
   @Override
-  public List<String> getComments(int commentCount, int pageNumber) {
+  public List<Comment> getComments(int commentCount, int pageNumber) {
     PreparedQuery results = buildPreparedResults(COMMENT_QUERY);
     int offset = (pageNumber - 1) * commentCount;
     FetchOptions options = 
@@ -47,9 +47,10 @@ class DatastoreCommentService implements CommentService {
   }
 
   @Override
-  public void addCommentToDatabase(String commentText) {
+  public void addCommentToDatabase(String commentText, String email) {
     Entity commentEntity = new Entity("Comment");
     long timestamp = System.currentTimeMillis();
+    commentEntity.setProperty("author", email);
     commentEntity.setProperty("text", commentText);
     commentEntity.setProperty("timestamp", timestamp);
 

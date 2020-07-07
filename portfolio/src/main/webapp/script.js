@@ -13,8 +13,28 @@
 // limitations under the License.
 
 function loadPage() {
-  attachCommentFormSubmissionEvent();
+  loadCommentForm();
   loadComments();
+}
+
+async function loadCommentForm() {
+  attachCommentFormSubmissionEvent();
+  const userData = await getUserData();
+  const commentForm = document.getElementById('comment-form');
+  const loginMessage = document.getElementById('login-message');
+  if (userData.loggedIn) {
+    commentForm.style.display = 'block';
+    loginMessage.style.display = 'none';
+  } else {
+    commentForm.style.display = 'none';
+    loginMessage.style.display = 'block';
+  }
+}
+
+async function getUserData() {
+  const serverData = await fetch('/user-data');
+  const userData = await serverData.json();
+  return userData;
 }
 
 function attachCommentFormSubmissionEvent() {
@@ -26,12 +46,12 @@ function attachCommentFormSubmissionEvent() {
 }
 
 async function submitComment(form) {
-  let params = new FormData(form);
-
+  let params = new URLSearchParams(new FormData(form));
+  
   await fetch('/data', { 
     method: 'POST', 
     body: params, 
-    headers: { 'Content-type': 'multipart/form-data' }
+    headers: { 'Content-type': 'application/x-www-form-urlencoded' }
   });
 
   loadComments();
@@ -74,9 +94,10 @@ function replaceComments(newComments) {
   removeAllChildren(commentContainer);
   if (newComments) {
     for (let comment of newComments) {
-        let commentDomObject = document.createElement('li');
-        commentDomObject.innerText = comment;
-        commentContainer.appendChild(commentDomObject);
+      let displayText = `${comment.author}: ${comment.content}`;
+      let commentDomObject = document.createElement('li');
+      commentDomObject.innerText = displayText;
+      commentContainer.appendChild(commentDomObject);
     }
   }
 }
