@@ -31,7 +31,7 @@ async function submitComment(form) {
   await fetch('/data', { 
     method: 'POST', 
     body: params, 
-    headers: { 'Content-type': 'x-www-form-urlencoded' }
+    headers: { 'Content-type': 'multipart/form-data' }
   });
 
   loadComments();
