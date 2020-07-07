@@ -12,19 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-async function submitComment() {
-  const commentInputArea = document.getElementById('comment-input-area');
-  const commentText = commentInputArea.value;
+function loadPage() {
+  attachCommentFormSubmissionEvent();
+  loadComments();
+}
 
-  let params =  new URLSearchParams();
-  params.append("comment", commentText);
+function attachCommentFormSubmissionEvent() {
+  const commentForm = document.getElementById('comment-form');
+  commentForm.addEventListener('submit', event => {
+    event.preventDefault();
+    submitComment(event.target);
+  });
+}
 
-  await fetch(`/data`, { 
+async function submitComment(form) {
+  let params = new FormData(form);
+
+  await fetch('/data', { 
     method: 'POST', 
     body: params, 
-    headers: { 'Content-type': 'application/x-www-form-urlencoded' }
+    headers: { 'Content-type': 'x-www-form-urlencoded' }
   });
+
   loadComments();
+  const commentInputArea = document.getElementById('comment-input-area');
   commentInputArea.value = '';
 }
 
