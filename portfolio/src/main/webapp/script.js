@@ -109,7 +109,11 @@ function replaceComments(newComments) {
   removeAllChildren(commentContainer);
   if (newComments) {
     for (let comment of newComments) {
-      let displayText = `${comment.author}: ${comment.content}`;
+      let author =  comment.author;
+      if (author === undefined) {
+        author = "Unknown"
+      }
+      const displayText = `${author}: ${comment.content}`;
       let commentDomObject = document.createElement('li');
       commentDomObject.innerText = displayText;
       commentContainer.appendChild(commentDomObject);
