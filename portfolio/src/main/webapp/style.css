@@ -174,3 +174,16 @@ a:visited {
 .section {
     margin-bottom: 40px;
 }
+
+.logged-in {
+  display: none;
+}
+
+.logged-out {
+  display: none;
+}
+
+#comment-input-area {
+  width: 100%;
+  resize: vertical;
+}

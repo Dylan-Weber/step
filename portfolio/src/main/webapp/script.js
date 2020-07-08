@@ -12,11 +12,65 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-async function submitComment() {
-  const commentInputArea = document.getElementById('comment-input-area');
-  const commentText = commentInputArea.value;
-  await fetch(`/data?comment=${commentText}`, {method: 'POST'});
+function loadPage() {
+  loadUserDataReliantElements();
   loadComments();
+}
+
+async function loadUserDataReliantElements() {
+  const userData = await getUserData();
+  loadAuthenticationReliantElements(userData);
+  loadCommentForm(userData);
+}
+
+async function getUserData() {
+  const serverData = await fetch('/user-data');
+  const userData = await serverData.json();
+  return userData;
+}
+
+async function loadAuthenticationReliantElements(userData) {
+  const loggedInElements = document.getElementsByClassName('logged-in');
+  const loggedOutElements = document.getElementsByClassName('logged-out');
+  
+  for (let element of loggedInElements) {
+    element.style.display = (userData.loggedIn) ? 'block' : 'none';
+  }
+
+  for (let element of loggedOutElements) {
+    element.style.display = (userData.loggedIn) ? 'none' : 'block';
+  }
+}
+
+async function loadCommentForm(userData) {
+  attachCommentFormSubmissionEvent();
+  loadCommentFormUsername(userData);
+}
+
+async function loadCommentFormUsername(userData) {
+  let commentFormUsername = document.getElementById("comment-form-username");
+  commentFormUsername.innerText = userData.email;
+}
+
+function attachCommentFormSubmissionEvent() {
+  const commentForm = document.getElementById('comment-form');
+  commentForm.addEventListener('submit', event => {
+    event.preventDefault();
+    submitComment(event.target);
+  });
+}
+
+async function submitComment(form) {
+  let params = new URLSearchParams(new FormData(form));
+  
+  await fetch('/data', { 
+    method: 'POST', 
+    body: params, 
+    headers: { 'Content-type': 'application/x-www-form-urlencoded' }
+  });
+
+  loadComments();
+  const commentInputArea = document.getElementById('comment-input-area');
   commentInputArea.value = '';
 }
 
@@ -32,7 +86,11 @@ async function requestCommentData() {
   const commentCount = commentCountSelector.value;
   const commentPage = commentPageSelector.value;
 
-  const url = `/data?count=${commentCount}&page=${commentPage}`;
+  let params =  new URLSearchParams();
+  params.append("count", commentCount);
+  params.append("page", commentPage);
+
+  const url = `/data?` + params.toString();
   const data = await fetch(url);
   const serverResponse = await data.json();
   return serverResponse;
@@ -51,9 +109,14 @@ function replaceComments(newComments) {
   removeAllChildren(commentContainer);
   if (newComments) {
     for (let comment of newComments) {
-        let commentDomObject = document.createElement('li');
-        commentDomObject.innerText = comment;
-        commentContainer.appendChild(commentDomObject);
+      let author =  comment.author;
+      if (author === undefined) {
+        author = "Unknown"
+      }
+      const displayText = `${author}: ${comment.content}`;
+      let commentDomObject = document.createElement('li');
+      commentDomObject.innerText = displayText;
+      commentContainer.appendChild(commentDomObject);
     }
   }
 }
