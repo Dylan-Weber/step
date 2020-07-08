@@ -27,6 +27,13 @@ import com.google.gson.Gson;
 
 @WebServlet("/user-data")
 public class UserDataServlet extends HttpServlet { 
+  
+  private UserManager userManager;
+
+  @Override 
+  public void init() {
+    userManager = new UsersApiUserManager();
+  }
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -34,7 +41,6 @@ public class UserDataServlet extends HttpServlet {
 
     Map<String, Object> params = new HashMap<>();
 
-    UserManager userManager = new UsersApiUserManager();
     boolean loggedIn = userManager.userIsLoggedIn();
     params.put("loggedIn", loggedIn);
     if (loggedIn) {

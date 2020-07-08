@@ -14,10 +14,12 @@ import com.google.gson.Gson;
 public class DataServlet extends HttpServlet {
 
   private CommentService commentHandler;
-
+  private UserManager userManager;
+  
   @Override
   public void init() {
     commentHandler = new DatastoreCommentService();
+    userManager = new UsersApiUserManager();
   }
 
   @Override
@@ -41,12 +43,11 @@ public class DataServlet extends HttpServlet {
   @Override 
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String comment = getParameter(request, "comment", "");
-    UserManager userManager = new UsersApiUserManager();
     if (!comment.equals("") && userManager.userIsLoggedIn()) {
       commentHandler.addCommentToDatabase(comment, userManager.currentUserEmail());
     }
   }
-
+  
   /**
    * @return the request parameter, or the default value if the parameter
    *         was not specified by the client

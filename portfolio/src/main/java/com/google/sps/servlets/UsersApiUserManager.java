@@ -5,17 +5,13 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 class UsersApiUserManager implements UserManager {
 
-  private UserService userService;
-
-  UsersApiUserManager() {
-    userService = UserServiceFactory.getUserService();
-  }
-
   public boolean userIsLoggedIn() {
+    UserService userService = UserServiceFactory.getUserService();
     return userService.isUserLoggedIn();
   }
 
   public String currentUserEmail() {
+    UserService userService = UserServiceFactory.getUserService();
     return userService.getCurrentUser().getEmail();
   }
 }
