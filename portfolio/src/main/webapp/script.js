@@ -13,28 +13,43 @@
 // limitations under the License.
 
 function loadPage() {
-  loadCommentForm();
+  loadUserDataReliantElements();
   loadComments();
 }
 
-async function loadCommentForm() {
-  attachCommentFormSubmissionEvent();
+async function loadUserDataReliantElements() {
   const userData = await getUserData();
-  const commentForm = document.getElementById('comment-form');
-  const loginMessage = document.getElementById('login-message');
-  if (userData.loggedIn) {
-    commentForm.style.display = 'block';
-    loginMessage.style.display = 'none';
-  } else {
-    commentForm.style.display = 'none';
-    loginMessage.style.display = 'block';
-  }
+  loadAuthenticationReliantElements(userData);
+  loadCommentForm(userData);
 }
 
 async function getUserData() {
   const serverData = await fetch('/user-data');
   const userData = await serverData.json();
   return userData;
+}
+
+async function loadAuthenticationReliantElements(userData) {
+  const loggedInElements = document.getElementsByClassName('logged-in');
+  const loggedOutElements = document.getElementsByClassName('logged-out');
+  
+  for (let element of loggedInElements) {
+    element.style.display = (userData.loggedIn) ? 'block' : 'none';
+  }
+
+  for (let element of loggedOutElements) {
+    element.style.display = (userData.loggedIn) ? 'none' : 'block';
+  }
+}
+
+async function loadCommentForm(userData) {
+  attachCommentFormSubmissionEvent();
+  loadCommentFormUsername(userData);
+}
+
+async function loadCommentFormUsername(userData) {
+  let commentFormUsername = document.getElementById("comment-form-username");
+  commentFormUsername.innerText = userData.email;
 }
 
 function attachCommentFormSubmissionEvent() {

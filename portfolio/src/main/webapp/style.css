@@ -175,6 +175,10 @@ a:visited {
     margin-bottom: 40px;
 }
 
-#comment-form {
+.logged-in {
+  display: none;
+}
+
+.logged-out {
   display: none;
 }
