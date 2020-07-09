@@ -21,6 +21,7 @@ async function loadUserDataReliantElements() {
   const userData = await getUserData();
   loadAuthenticationReliantElements(userData);
   loadCommentForm(userData);
+  loadNicknameForm(userData);
 }
 
 async function getUserData() {
@@ -42,14 +43,53 @@ async function loadAuthenticationReliantElements(userData) {
   }
 }
 
-async function loadCommentForm(userData) {
-  attachCommentFormSubmissionEvent();
-  loadCommentFormUsername(userData);
+
+async function submitForm(form, url) {
+  let params = new URLSearchParams(new FormData(form));
+  
+  return fetch(url, { 
+    method: 'POST', 
+    body: params, 
+    headers: { 'Content-type': 'application/x-www-form-urlencoded' }
+  });
 }
 
-async function loadCommentFormUsername(userData) {
-  let commentFormUsername = document.getElementById("comment-form-username");
-  commentFormUsername.innerText = userData.email;
+async function loadNicknameForm(userData) {
+  attachNicknameFormSubmissionEvent();
+  loadNicknameFormUsername(userData);
+  clearNicknameInput();
+}
+
+
+function loadNicknameFormUsername(userData) {
+  let nicknameFormUsername = document.getElementById("nickname-form-username");
+  nicknameFormUsername.innerText = userData.nickname;
+}
+
+function clearNicknameInput() {
+  const nicknameInput = document.getElementById('nickname-input');
+  nicknameInput.value = '';
+}
+
+function attachNicknameFormSubmissionEvent() {
+  const nicknameForm = document.getElementById('nickname-form');
+  nicknameForm.addEventListener('submit', event => {
+    event.preventDefault();
+    submitNickname(event.target);
+  });
+}
+
+async function submitNickname(form) {
+  await submitForm(form, '/user-data');
+
+  const userData = await getUserData();
+
+  loadNicknameFormUsername(userData);
+  loadComments(userData); // Reload the comments because the user's nickname may have changed in them
+}
+
+function loadCommentForm(userData) {
+  attachCommentFormSubmissionEvent();
 }
 
 function attachCommentFormSubmissionEvent() {
@@ -61,13 +101,7 @@ function attachCommentFormSubmissionEvent() {
 }
 
 async function submitComment(form) {
-  let params = new URLSearchParams(new FormData(form));
-  
-  await fetch('/data', { 
-    method: 'POST', 
-    body: params, 
-    headers: { 'Content-type': 'application/x-www-form-urlencoded' }
-  });
+  await submitForm(form, '/data');
 
   loadComments();
   const commentInputArea = document.getElementById('comment-input-area');
