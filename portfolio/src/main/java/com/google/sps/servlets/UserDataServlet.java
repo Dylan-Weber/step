@@ -29,10 +29,12 @@ import com.google.gson.Gson;
 public class UserDataServlet extends HttpServlet { 
   
   private UserManager userManager;
+  private NicknameService nicknameService;
 
   @Override 
   public void init() {
     userManager = new UsersApiUserManager();
+    nicknameService = new DatastoreNicknameService();
   }
 
   @Override
@@ -46,10 +48,23 @@ public class UserDataServlet extends HttpServlet {
     if (loggedIn) {
       String email = userManager.currentUserEmail();
       params.put("email", email);
+      String nickname = nicknameService.getNicknameFromEmail(email);
+      params.put("nickname", nickname);
     }
 
     Gson gson = new Gson();
     String userData = gson.toJson(params);
     response.getWriter().println(userData);
+  }
+
+  @Override 
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String nickname = request.getParameter("nickname");
+    boolean loggedIn = userManager.userIsLoggedIn();
+    if (loggedIn) {
+      String id = userManager.currentUserId();
+      String email = userManager.currentUserEmail();
+      nicknameService.setNickname(id, email, nickname);
+    }
   }
 }

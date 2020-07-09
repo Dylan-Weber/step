@@ -14,4 +14,9 @@ class UsersApiUserManager implements UserManager {
     UserService userService = UserServiceFactory.getUserService();
     return userService.getCurrentUser().getEmail();
   }
+  
+  public String currentUserId() {
+    UserService userService = UserServiceFactory.getUserService();
+    return userService.getCurrentUser().getUserId();
+  }
 }
