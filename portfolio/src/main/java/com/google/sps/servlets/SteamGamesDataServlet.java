@@ -67,6 +67,7 @@ public class SteamGamesDataServlet extends HttpServlet {
     }
 
     List<Map<String, Object>> limitedGameData = gameData.stream()
+      .filter(game -> (Boolean) game.get("vrSupport"))
       .limit(count)
       .collect(Collectors.toList());
     Gson gson = new Gson();

@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Dylan Weber</title>
         <link rel="stylesheet" href="style.css">
+        <script src="https://www.gstatic.com/charts/loader.js"></script>
         <script src="script.js"></script>
     </head>
     <body onload="loadPage();">
@@ -15,6 +16,7 @@
                 <li class="navbar-item"><a href="#acting">Acting</a></li>
                 <li class="navbar-item"><a href="#cat-pictures">Cat Pictures</a></li>
                 <li class="navbar-item"><a href="#comments">Comments</a></li>
+                <li class="navbar-item"><a href="#charts">Charts</a></li>
                 <li class="navbar-item logged-out"><a href="/login?redirectUrl=/">Log In</a></li>
                 <li class="navbar-item logged-in"><a href="/logout?redirectUrl=/">Log Out</a></li>
             </ul>
@@ -101,6 +103,12 @@
                 <button onclick="deleteAllComments();">Delete All Comments</button>
                 
                 <ul id="comment-container"></ul>
+            </div>
+
+            <div id="charts" class="section">
+            <h2>Some Unrelated Charts</h2>
+            <div id="vr-game-chart-container"></div>
+            
             </div>
         </div>
     </body>
