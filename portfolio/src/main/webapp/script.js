@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(() => drawChart(10));
+
 function loadPage() {
   loadUserDataReliantElements();
   loadComments();
@@ -164,4 +167,28 @@ function removeAllChildren(node) {
 async function deleteAllComments() {
   await fetch('/delete-data', {method: 'POST'});
   loadComments();
+}
+
+function drawChart(numberOfGames) {
+  fetch(`/steam-games-data?count=${numberOfGames}`).then(response => response.json())
+  .then((games) => {
+    const data = new google.visualization.DataTable();
+    data.addColumn('string', 'Game');
+    data.addColumn('number', 'Total owners');
+    games.sort((a, b) => a.owners > b.owners);
+    
+    for (let game of games) {
+      data.addRow([game.name, game.owners]);
+    }
+
+    const options = {
+      'title': 'VR-Supporting Games on Steam with the Most Owners',
+      'width':600,
+      'height':500
+    };
+
+    const chart = new google.visualization.BarChart(
+        document.getElementById('vr-game-chart-container'));
+    chart.draw(data, options);
+  });
 }
