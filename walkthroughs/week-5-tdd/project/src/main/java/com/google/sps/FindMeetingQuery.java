@@ -27,13 +27,63 @@ public final class FindMeetingQuery {
 
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     
-    long duration = request.getDuration();
-    if (duration > LONGEST_MEETING_DURATION) {
+    long meetingDuration = request.getDuration();
+    if (meetingDuration > LONGEST_MEETING_DURATION) {
       return new ArrayList<>();
     }
 
+    List<StartEndTime> eventTimes = getEventTimes(events, request.getAttendees());
+    Collections.sort(eventTimes);
+
+    return getPotentialTimes(eventTimes, meetingDuration);
+  }
+
+  private <T> Set<T> intersection(Set<T> first, Set<T> second) {
+    Set<T> result = new HashSet<>(first);
+    result.retainAll(second);
+    return result;
+  }
+
+  private List<TimeRange> getPotentialTimes(List<StartEndTime> eventTimes, long meetingDuration) {
+    int conflicts = 0;
+    int startOfOpenTime = TimeRange.START_OF_DAY;
+
+    List<TimeRange> potentialTimes = new ArrayList<>();
+
+    for (StartEndTime time : eventTimes) {
+      if (time.type == TimeType.START) {
+        conflicts++;
+        
+        if (conflicts == 1) {
+          addTimeRangeIfValid(potentialTimes, meetingDuration, startOfOpenTime, time.time);
+        }
+      } else {
+        conflicts--;
+
+        if (conflicts == 0) {
+          startOfOpenTime = time.time;
+        }
+      }
+    }
+
+    if (conflicts == 0) {
+      addTimeRangeIfValid(potentialTimes, meetingDuration, startOfOpenTime, TimeRange.END_OF_DAY + 1);
+    }
+
+    return potentialTimes;
+  }
+  
+  private void addTimeRangeIfValid(Collection<TimeRange> potentialTimes, long minimumDuration, int start, int end) {
+    if (minimumDuration <= end - start) {
+      TimeRange timeRangeToAdd = TimeRange.fromStartEnd(start, end, false);
+      potentialTimes.add(timeRangeToAdd);
+    }
+  }
+
+  private List<StartEndTime> getEventTimes(Collection<Event> events, Collection<String> attendees) {
     Set<String> requestAttendees = new HashSet<>();
-    requestAttendees.addAll(request.getAttendees());
+    requestAttendees.addAll(attendees);
+    
     List<StartEndTime> eventTimes = new ArrayList<>();
 
     for (Event event : events) {
@@ -47,47 +97,7 @@ public final class FindMeetingQuery {
       }
     }
 
-    Collections.sort(eventTimes);
-
-    int conflicts = 0;
-    int startOfOpenTime = TimeRange.START_OF_DAY;
-
-    List<TimeRange> potentialTimes = new ArrayList<>();
-
-    for (StartEndTime time : eventTimes) {
-      if (time.type == TimeType.START) {
-        conflicts++;
-        
-        if (conflicts == 1) {
-          addTimeRangeIfValid(potentialTimes, duration, startOfOpenTime, time.time);
-        }
-      } else {
-        conflicts--;
-
-        if (conflicts == 0) {
-          startOfOpenTime = time.time;
-        }
-      }
-    }
-
-    if (conflicts == 0) {
-      addTimeRangeIfValid(potentialTimes, duration, startOfOpenTime, TimeRange.END_OF_DAY + 1);
-    }
-
-    return potentialTimes;
-  }
-
-  private <T> Set<T> intersection(Set<T> first, Set<T> second) {
-    Set<T> result = new HashSet<>(first);
-    result.retainAll(second);
-    return result;
-  }
-
-  private void addTimeRangeIfValid(Collection<TimeRange> potentialTimes, long minimumDuration, int start, int end) {
-    if (minimumDuration <= end - start) {
-      TimeRange timeRangeToAdd = TimeRange.fromStartEnd(start, end, false);
-      potentialTimes.add(timeRangeToAdd);
-    }
+    return eventTimes;
   }
 
   private enum TimeType {
