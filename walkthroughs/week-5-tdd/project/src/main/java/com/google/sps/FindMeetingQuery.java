@@ -50,18 +50,18 @@ public final class FindMeetingQuery {
 
     List<TimeRange> potentialTimes = new ArrayList<>();
 
-    for (StartEndTime time : eventTimes) {
-      if (time.type == TimeType.START) {
+    for (StartEndTime currentTime : eventTimes) {
+      if (currentTime.type == TimeType.START) {
         conflicts++;
         
         if (conflicts == 1) {
-          addTimeRangeIfValid(potentialTimes, meetingDuration, startOfOpenTime, time.time);
+          addTimeRangeIfValid(potentialTimes, meetingDuration, startOfOpenTime, currentTime.time);
         }
       } else {
         conflicts--;
 
         if (conflicts == 0) {
-          startOfOpenTime = time.time;
+          startOfOpenTime = currentTime.time;
         }
       }
     }
