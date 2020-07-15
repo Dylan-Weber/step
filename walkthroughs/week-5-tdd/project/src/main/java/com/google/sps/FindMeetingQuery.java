@@ -32,26 +32,62 @@ public final class FindMeetingQuery {
       return new ArrayList<>();
     }
 
-    List<StartEndTime> eventTimes = getEventTimes(events, request.getAttendees());
+    Collection<String> mandatoryAttendees = request.getAttendees();
+    Collection<String> allAttendees = new HashSet<>();
+    allAttendees.addAll(mandatoryAttendees);
+    allAttendees.addAll(request.getOptionalAttendees());
+
+    Collection<TimeRange> timesWithOptionalAttendees = queryWithGivenAttendees(events, allAttendees, meetingDuration);
+    if (!timesWithOptionalAttendees.isEmpty()) {
+      return timesWithOptionalAttendees;
+    } else if (!mandatoryAttendees.isEmpty()){
+      return queryWithGivenAttendees(events, mandatoryAttendees, meetingDuration);
+    } else {
+      return new ArrayList<>();
+    }
+  }
+
+  private Collection<TimeRange> queryWithGivenAttendees(Collection<Event> events, Collection<String> attendees, long meetingDuration) {
+    List<Time> eventTimes = getEventTimes(events, attendees);
     Collections.sort(eventTimes);
 
     return getPotentialTimes(eventTimes, meetingDuration);
   }
 
+  private List<Time> getEventTimes(Collection<Event> events, Collection<String> attendees) {
+    Set<String> requestAttendees = new HashSet<>();
+    requestAttendees.addAll(attendees);
+    
+    List<Time> eventTimes = new ArrayList<>();
+
+    for (Event event : events) {
+      Set<String> eventAttendees = event.getAttendees();
+      Set<String> attendeeIntersection = intersection(requestAttendees, eventAttendees);
+      
+      if (!attendeeIntersection.isEmpty()) {
+        TimeRange eventTime = event.getWhen();
+        eventTimes.add(new Time(Time.TimeType.START, eventTime.start()));
+        eventTimes.add(new Time(Time.TimeType.END, eventTime.end()));
+      }
+    }
+
+    return eventTimes;
+  }
+  
   private <T> Set<T> intersection(Set<T> first, Set<T> second) {
     Set<T> result = new HashSet<>(first);
     result.retainAll(second);
     return result;
   }
 
-  private List<TimeRange> getPotentialTimes(List<StartEndTime> eventTimes, long meetingDuration) {
+  private List<TimeRange> getPotentialTimes(List<Time> eventTimes, long meetingDuration) {
     int conflicts = 0;
     int startOfOpenTime = TimeRange.START_OF_DAY;
 
     List<TimeRange> potentialTimes = new ArrayList<>();
 
-    for (StartEndTime currentTime : eventTimes) {
-      if (currentTime.type == TimeType.START) {
+    for (Time currentTime : eventTimes) {
+      if (currentTime.type == Time.TimeType.START) {
         conflicts++;
         
         if (conflicts == 1) {
@@ -80,44 +116,26 @@ public final class FindMeetingQuery {
     }
   }
 
-  private List<StartEndTime> getEventTimes(Collection<Event> events, Collection<String> attendees) {
-    Set<String> requestAttendees = new HashSet<>();
-    requestAttendees.addAll(attendees);
-    
-    List<StartEndTime> eventTimes = new ArrayList<>();
 
-    for (Event event : events) {
-      Set<String> eventAttendees = event.getAttendees();
-      Set<String> attendeeIntersection = intersection(requestAttendees, eventAttendees);
-      
-      if (!attendeeIntersection.isEmpty()) {
-        TimeRange eventTime = event.getWhen();
-        eventTimes.add(new StartEndTime(TimeType.START, eventTime.start()));
-        eventTimes.add(new StartEndTime(TimeType.END, eventTime.end()));
-      }
+  private static final class Time implements Comparable<Time> {
+    
+    enum TimeType {
+      START,
+      END;
     }
 
-    return eventTimes;
-  }
 
-  private enum TimeType {
-    START,
-    END;
-  }
+    final TimeType type;
+    final int time;
 
-  private static final class StartEndTime implements Comparable<StartEndTime> {
-    
-    TimeType type;
-    int time;
-
-    StartEndTime(TimeType type, int time) {
+    Time(TimeType type, int time) {
       this.type = type;
       this.time = time;
     }
 
     @Override
-    public int compareTo(StartEndTime other) {
-      return this.time - other.time;
+    public int compareTo(Time other) {
+      return Integer.compare(this.time, other.time);
     }
   }
 }
